@@ -1,0 +1,3 @@
+grammar Project;
+
+start : EOF ;
