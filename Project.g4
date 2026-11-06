@@ -2,7 +2,7 @@ grammar Project;
 
 start : ( statement | NEWLINE )* EOF ;
 
-statement : ID '=' expression ;
+statement : ID ( '=' | '+=' | '-=' | '*=' | '/=' ) expression ;
 
 expression : STRING | INT | FLOAT | BOOL | ID 
            | expression ( '*' | '/' | '%' ) expression
