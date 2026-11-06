@@ -4,7 +4,10 @@ start : ( statement | NEWLINE )* EOF ;
 
 statement : ID '=' expression ;
 
-expression : STRING | INT | FLOAT | BOOL | ID ;
+expression : STRING | INT | FLOAT | BOOL | ID 
+           | expression ( '*' | '/' | '%' ) expression
+           | expression ( '+' | '-' ) expression
+           ;
 
 BOOL : 'True' | 'False' ;
 
