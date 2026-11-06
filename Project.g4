@@ -4,10 +4,13 @@ start : ( statement | NEWLINE )* EOF ;
 
 statement : ID ( '=' | '+=' | '-=' | '*=' | '/=' ) expression ;
 
-expression : STRING | INT | FLOAT | BOOL | ID 
+expression : array
            | expression ( '*' | '/' | '%' ) expression
            | expression ( '+' | '-' ) expression
+           | STRING | FLOAT | INT | BOOL | ID
            ;
+
+array : '[' (expression ( ',' expression )* )? ']';
 
 BOOL : 'True' | 'False' ;
 
