@@ -4,7 +4,7 @@ from generated_output.project_part_1Lexer import project_part_1Lexer
 from generated_output.project_part_1Parser import project_part_1Parser
 
 def main():
-    # Load your test code file
+    # Load test code file
     input_file = "project_deliverable_1.py"
     input_stream = FileStream(input_file, encoding='utf-8')
     
@@ -12,10 +12,10 @@ def main():
     lexer = project_part_1Lexer(input_stream)
     stream = CommonTokenStream(lexer)
     
-    # Set up the parser
+    # Set up parser
     parser = project_part_1Parser(stream)
     
-    # Call the start rule defined in project_part_1.g4
+    # Call the start rule
     tree = parser.start()
     
     # Print the textual representation of the parse tree
