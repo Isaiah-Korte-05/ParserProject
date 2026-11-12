@@ -1,4 +1,4 @@
-grammar Project;
+grammar project_part_1;
 
 start : ( statement | NEWLINE )* EOF ;
 
