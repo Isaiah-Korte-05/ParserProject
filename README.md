@@ -1,8 +1,20 @@
 # CMP_SC 4450: Principles of Programming Languages
 
-Python Parser Project
+Fall 2026 with Dr. Ekin
 
-## A-LINE
+## Parser Project
+Explain your project
+
+## Requirements
+Include the requirements that are required for your parser. For example, what are the steps for the setup, what are the versions of the required libraries, and what environment is needed?
+
+## How to use/run
+Write a “How to use/run” the parser.
+
+## Team A-LINE Members
 - Anna Mori
 - Isiaiah Korte
 - LeeAnn Lin
+
+## Demonstration Video
+embed here later
