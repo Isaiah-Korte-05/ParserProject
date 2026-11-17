@@ -17,4 +17,9 @@ Include the requirements that are required for your parser. For example, what ar
 Write a “How to use/run” the parser.
 
 ## Demonstration Video
-embed here later
+*embed here later*
+
+No presentation is required, but a demo video is required for your parser project. You can
+upload your video to Canvas along with your project, or you can upload it to YouTube, but a link
+will be required. You can also embed the demo video into your README.md file on your GitHub
+repo. The video should present a working version and demonstration of the parser
