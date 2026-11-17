@@ -2,7 +2,11 @@ grammar project_part_1;
 
 start : ( statement | NEWLINE )* EOF ;
 
-statement : ID ( '=' | '+=' | '-=' | '*=' | '/=' ) expression ;
+statement : assigenemnt 
+          | ifStatement
+          ;
+
+assignement : ID ( '=' | '+=' | '-=' | '*=' | '/=' ) expression ;
 
 expression : array
            | expression ( '*' | '/' | '%' ) expression
@@ -25,3 +29,30 @@ INT : '-'? [0-9]+ ;
 NEWLINE : [\r\n]+ ;
 
 WS : [ \t]+ -> skip ;
+
+// Key Words
+IF : 'if';
+ELSE : 'else';
+ELIF : 'elif';
+
+comOp : '<'
+    | '<='
+    | '>'
+    | '>='
+    | '=='
+    | '!=' 
+    ;
+    
+// indentations
+INDENTATION : '<INDENT>';
+DEDENTATION : '<DEDENT>';
+    
+ifStatement : IF expression ':' suite 
+            (ELIF expression ':' suite)*
+            (ELSE ':' suite)
+            ;
+
+suite : NEWLINE INDENTATION NEWLINE
+        (statement NEWLINE*)+
+        DEDENTATION
+        ;
