@@ -1,51 +1,44 @@
 grammar project_part_2;
 
-start : ( statement | NEWLINE )* EOF ;
+start : ( statement | INDENT statement | NEWLINE )* EOF ;
 
 statement : assignment 
-          | ifStatement
+          | if_statement
           ;
 
-assignment : ID ( '=' | '+=' | '-=' | '*=' | '/=' ) expression ;
+assignment : ID assignment_operator expression ;
 
-// this is to make sure no multiple tree can be made
-expression : orExp;
+assignment_operator : '=' | '+=' | '-=' | '*=' | '/=' ;
 
-orExp : andExp (OR andExp)*;
+expression : or_expression ;
 
-andExp : notExp (AND notExp)*;
+or_expression : and_expression ( OR and_expression )* ;
 
-notExp : NOT notExp
-       | compExpression
-       ;
+and_expression : not_expression ( AND not_expression )* ;
 
-compExpression : arithmetic (compOP arithmetic)? ;
+not_expression : NOT not_expression | comparison_expression ;
 
-arithmetic : first (('+' | '-') first)*;
+comparison_expression : arithmetic ( comparison_operator arithmetic )? ;
 
-first : second (('*' | '/' | '%') second)*;
+arithmetic : first ( ( '+' | '-' ) first )* ;
 
-second : ('+' | '-') second
-       | dataType
-       ;
+first : second ( ( '*' | '/' | '%' ) second )* ;
 
-compOP : '<' | '<=' | '>' | '>=' | '==' | '!=';
+second : ( '+' | '-' ) second | data_type ;
 
-dataType : '(' expression ')'
+comparison_operator : '<' | '<=' | '>' | '>=' | '==' | '!=' ;
+
+data_type : '(' expression ')'
          | array | STRING | FLOAT | INT | BOOL | ID 
          ;
 
-ifStatement : IF expression ':' suite 
-            (ELIF expression ':' suite)*
-            (ELSE ':' suite)?
-            ;
+if_statement : IF expression ':' suite 
+              ( ELIF expression ':' suite )*
+              ( ELSE ':' suite )?
+              ;
 
-suite : NEWLINE INDENTATION 
-        (NEWLINE | statement NEWLINE*)+
-        DEDENTATION
-        ;
+suite : ( INDENT statement )+ NEWLINE* ;
 
-// Key Words / Lexer Rule
 IF : 'if';
 ELIF : 'elif';
 ELSE : 'else';
@@ -54,9 +47,6 @@ AND : 'and';
 OR : 'or';
 NOT : 'not';
 
-INDENTATION : '<INDENT>';
-DEDENTATION : '<DEDENT>';
-
 array : '[' (expression ( ',' expression )* )? ']';
 
 BOOL : 'True' | 'False' ;
@@ -64,5 +54,7 @@ ID : [a-zA-Z_] [a-zA-Z0-9_]* ;
 STRING : '"' .*? '"' | '\'' .*? '\'' ;
 FLOAT : '-'? [0-9]+ '.' [0-9]+ ;
 INT : '-'? [0-9]+ ;
-NEWLINE : '\r'? '\n' ;
+
+INDENT : NEWLINE [ \t]+ ;
+NEWLINE : ( '\r'? '\n' )+ ;
 WS : [ \t]+ -> skip ;
