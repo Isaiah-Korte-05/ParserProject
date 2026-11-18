@@ -1,9 +1,11 @@
 grammar project_part_3;
 
-start : ( statement | INDENT statement | NEWLINE )* EOF ;
+start : ( INDENT? statement | NEWLINE )* EOF ;
 
 statement : assignment 
           | if_statement
+          | while_loop
+          | for_loop
           ;
 
 assignment : ID assignment_operator expression ;
@@ -29,31 +31,44 @@ second : ( '+' | '-' ) second | data_type ;
 comparison_operator : '<' | '<=' | '>' | '>=' | '==' | '!=' ;
 
 data_type : '(' expression ')'
-         | array | STRING | FLOAT | INT | BOOL | ID 
-         ;
+          | function_call
+          | array | STRING | FLOAT | INT | BOOL | ID 
+          ;
+
+function_call : ID '(' ( expression ( ',' expression )* )? ')' ;
 
 if_statement : IF expression ':' suite 
-              ( ELIF expression ':' suite )*
-              ( ELSE ':' suite )?
+              ( INDENT? ELIF expression ':' suite )*
+              ( INDENT? ELSE ':' suite )?
               ;
 
-suite : ( INDENT statement )+ NEWLINE* ;
+while_loop : WHILE expression ':' suite ;
 
-IF : 'if';
-ELIF : 'elif';
-ELSE : 'else';
+for_loop : FOR ID IN expression ':' suite ;
 
-AND : 'and';
-OR : 'or';
-NOT : 'not';
+suite : ( INDENT? statement )+ NEWLINE* ;
 
-array : '[' (expression ( ',' expression )* )? ']';
+IF : 'if' ;
+ELIF : 'elif' ;
+ELSE : 'else' ;
+WHILE : 'while' ;
+FOR : 'for' ;
+IN : 'in' ;
+
+AND : 'and' ;
+OR : 'or' ;
+NOT : 'not' ;
+
+array : '[' (expression ( ',' expression )* )? ']' ;
 
 BOOL : 'True' | 'False' ;
 ID : [a-zA-Z_] [a-zA-Z0-9_]* ;
 STRING : '"' .*? '"' | '\'' .*? '\'' ;
 FLOAT : '-'? [0-9]+ '.' [0-9]+ ;
 INT : '-'? [0-9]+ ;
+
+SINGLE_LINE_COMMENT : '#' ~[\r\n]* -> skip ;
+MULTI_LINE_COMMENT : ( '\'\'\'' .*? '\'\'\'' | '"""' .*? '"""' ) -> skip ;
 
 INDENT : NEWLINE [ \t]+ ;
 NEWLINE : ( '\r'? '\n' )+ ;
