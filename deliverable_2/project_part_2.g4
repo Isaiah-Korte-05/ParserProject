@@ -8,36 +8,56 @@ statement : assignment
 
 assignment : ID assignment_operator expression ;
 
-assignment_operator : '=' | '+=' | '-=' | '*=' | '/=' ;
+assignment_operator 
+    : '=' 
+    | '+=' 
+    | '-=' 
+    | '*=' 
+    | '/=' 
+    ;
 
-expression : or_expression ;
+comparison_operator 
+    : '<' 
+    | '<=' 
+    | '>' 
+    | '>=' 
+    | '==' 
+    | '!=' 
+    ;
 
-or_expression : and_expression ( OR and_expression )* ;
+data_type
+    : array 
+    | STRING 
+    | FLOAT 
+    | INT 
+    | BOOL 
+    | ID 
+    ;
 
-and_expression : not_expression ( AND not_expression )* ;
+expression 
+    : '(' expression ')'
 
-not_expression : NOT not_expression | comparison_expression ;
+    |  '-' expression
+    | '+' expression
 
-comparison_expression : arithmetic ( comparison_operator arithmetic )? ;
+    | NOT expression
+    | left=expression AND right=expression
+    | left=expression OR right=expression
+    | left=expression compOp=comparison_operator right=expression
 
-arithmetic : first ( ( '+' | '-' ) first )* ;
+    | left=expression mulOp=('*' | '/' | '%') right=expression
+    | left=expression addOp=('+' | '-') right=expression
 
-first : second ( ( '*' | '/' | '%' ) second )* ;
+    | data_type
+    ;
 
-second : ( '+' | '-' ) second | data_type ;
+if_statement 
+    : IF expression ':' block 
+    ( ELIF expression ':' block )*
+    ( ELSE ':' block )?
+    ;
 
-comparison_operator : '<' | '<=' | '>' | '>=' | '==' | '!=' ;
-
-data_type : '(' expression ')'
-         | array | STRING | FLOAT | INT | BOOL | ID 
-         ;
-
-if_statement : IF expression ':' suite 
-              ( ELIF expression ':' suite )*
-              ( ELSE ':' suite )?
-              ;
-
-suite : ( INDENT statement )+ NEWLINE* ;
+block : ( INDENT statement )+ NEWLINE* ;
 
 IF : 'if';
 ELIF : 'elif';

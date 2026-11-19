@@ -1,7 +1,19 @@
-import sys
 from antlr4 import *
 from generated_output.project_part_3Lexer import project_part_3Lexer
 from generated_output.project_part_3Parser import project_part_3Parser
+
+def print_tree(tree, parser, indent=0):
+    if tree is None:
+        return
+
+    if isinstance(tree, TerminalNode):
+        print("  " * indent + f"{tree.getText()}")
+    else:
+        rule_idx = tree.getRuleIndex()
+        rule_name = parser.ruleNames[rule_idx]
+        print("  " * indent + f"[{rule_name}]")
+        for i in range(tree.getChildCount()):
+            print_tree(tree.getChild(i), parser, indent+  + 1)
 
 def main():
     # Load test code file
@@ -18,9 +30,8 @@ def main():
     # Call the start rule
     tree = parser.start()
     
-    # Print the textual representation of the parse tree
-    print("--- Parse Tree (Text) ---")
-    print(tree.toStringTree(recog=parser))
+    print("--- Formatted Parse Tree ---")
+    print_tree(tree, parser)
 
 if __name__ == '__main__':
     main()
